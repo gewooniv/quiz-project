@@ -6,19 +6,20 @@ export default function Quiz() {
   const questions = useQuestions();
 
   return (
-    <section className="quiz">
-      <div>
-        {questions.map((question) => {
-          return (
-            <div>
-              <Question>{question.text}</Question>
+    <section>
+      {questions.map((question) => {
+        return (
+          <div id="quiz">
+            <progress />
+            <Question>{question.text}</Question>
+            <div id="answers">
               {question.answers.map((answer) => {
-                return <Answer>{answer}</Answer>;
+                return <button className="answer">{answer}</button>;
               })}
             </div>
-          );
-        })}
-      </div>
+          </div>
+        );
+      })}
     </section>
   );
 }
