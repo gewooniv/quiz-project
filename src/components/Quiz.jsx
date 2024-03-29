@@ -1,5 +1,3 @@
-import Question from "./Question.jsx";
-import Answer from "./Answer.jsx";
 import { useQuestions } from "./QuizProvider.jsx";
 
 export default function Quiz() {
@@ -10,13 +8,17 @@ export default function Quiz() {
       {questions.map((question) => {
         return (
           <div id="quiz">
-            <progress />
-            <Question>{question.text}</Question>
-            <div id="answers">
-              {question.answers.map((answer) => {
-                return <button className="answer">{answer}</button>;
-              })}
+            <div id="question">
+              <progress />
+              <h2>{question.text}</h2>
             </div>
+            <ul id="answers">
+              <li className="answer">
+                {question.answers.map((answer) => {
+                  return <button>{answer}</button>;
+                })}
+              </li>
+            </ul>
           </div>
         );
       })}
