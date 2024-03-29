@@ -14,7 +14,14 @@ export default function Quiz() {
         <ul id="answers">
           <li className="answer">
             {question.answers.map((answer) => {
-              return <button onClick={console.log(answer)}>{answer}</button>;
+              return (
+                <button
+                  key={Math.random()}
+                  onClick={(entry) => (question.answer = entry.id)}
+                >
+                  {answer}
+                </button>
+              );
             })}
           </li>
         </ul>
