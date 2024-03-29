@@ -6,6 +6,10 @@ const QuizContext = createContext();
 export default function QuizProvider({ children }) {
   const [questions, setQuestions] = useState(QUESTIONS);
 
+  questions.map((question) => {
+    return { ...question, answer: undefined };
+  });
+
   return (
     <QuizContext.Provider value={questions}>{children}</QuizContext.Provider>
   );
