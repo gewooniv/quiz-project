@@ -1,11 +1,26 @@
 import { useQuestions } from "./QuizProvider.jsx";
+import { useState } from "react";
 
 export default function Quiz() {
   const questions = useQuestions();
   const question = questions.find((question) => question.answer === undefined);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  if (!question) {
+    setModalOpen(true);
+  }
+
+  function handleModalClose() {
+    setModalOpen(false);
+  }
 
   return (
     <section>
+      {modalOpen && (
+        <Modal open={modalOpen} onClose={handleModalClose}>
+          You are done.
+        </Modal>
+      )}
       <div id="quiz">
         <div id="question">
           <progress />
