@@ -1,5 +1,6 @@
 import { useQuestions } from "./QuizProvider.jsx";
 import { useState } from "react";
+import Modal from "./Modal.jsx";
 
 export default function Quiz() {
   const questions = useQuestions();
@@ -16,11 +17,10 @@ export default function Quiz() {
 
   return (
     <section>
-      {modalOpen && (
-        <Modal open={modalOpen} onClose={handleModalClose}>
-          You are done.
-        </Modal>
-      )}
+      <Modal open={modalOpen} onClose={handleModalClose}>
+        {modalOpen &&
+          "Lorem ipsum betekent niets, het is een verzameling Latijnse woorden die een tekst vormen van nep vullen, willekeurig, plaatsaanduiding."}
+      </Modal>
       <div id="quiz">
         <div id="question">
           <progress />
@@ -30,10 +30,7 @@ export default function Quiz() {
           <li className="answer">
             {question.answers.map((answer) => {
               return (
-                <button
-                  key={Math.random()}
-                  onClick={(entry) => (question.answer = entry.id)}
-                >
+                <button key={Math.random()} onClick={() => setModalOpen(true)}>
                   {answer}
                 </button>
               );
