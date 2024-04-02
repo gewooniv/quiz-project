@@ -1,13 +1,13 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 
-const QuizContext = createContext();
+export const QuizContext = createContext([]);
 
 export default function QuizProvider({ children }) {
+  const [userAnswers, setUserAnswers] = useState([]);
+
   return (
-    <QuizContext.Provider value={undefined}>{children}</QuizContext.Provider>
+    <QuizContext.Provider value={[userAnswers, setUserAnswers]}>
+      {children}
+    </QuizContext.Provider>
   );
 }
-
-// export function useAnswers() {
-//   return useContext(QuizContext);
-// }

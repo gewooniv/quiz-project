@@ -1,23 +1,22 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { QuizContext } from "./QuizProvider.jsx";
 import Modal from "./Modal.jsx";
 import QUESTIONS from ".././data/questions.js";
 
 export default function Quiz() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [userAnswers, setUserAnswers] = useState([]);
+  const [userAnswers, setUserAnswers] = useContext(QuizContext);
 
-  let activeQuestionIndex = userAnswers.length;
+  const activeQuestionIndex = userAnswers.length;
 
   function handleSelectAnswer(answer) {
     setUserAnswers((prevState) => {
       return [...prevState, answer];
     });
-    console.log(userAnswers);
-    console.log(QUESTIONS.length);
 
-    if (activeQuestionIndex === QUESTIONS.length - 2) {
+    if (activeQuestionIndex === QUESTIONS.length - 1) {
       setModalOpen(true);
-      activeQuestionIndex = 0; // temp solution
+      setUserAnswers([]); // temp solution
     }
   }
 
