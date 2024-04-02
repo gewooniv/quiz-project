@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { QuizContext } from "./QuizProvider.jsx";
-import Modal from "./Modal.jsx";
+import Summary from "./Summary.jsx";
 import QUESTIONS from ".././data/questions.js";
 
 export default function Quiz() {
@@ -8,30 +8,23 @@ export default function Quiz() {
   const [userAnswers, setUserAnswers] = useContext(QuizContext);
 
   const activeQuestionIndex = userAnswers.length;
+  const answeredAllQuestions = activeQuestionIndex === QUESTIONS.length;
+
+  if (answeredAllQuestions) {
+    return <Summary />;
+  }
+
+  const shuffledAnswers = [...QUESTIONS[activeQuestionIndex].answers];
+  shuffledAnswers.sort(() => Math.random() - 0.5);
 
   function handleSelectAnswer(answer) {
     setUserAnswers((prevState) => {
       return [...prevState, answer];
     });
-
-    if (activeQuestionIndex === QUESTIONS.length - 1) {
-      setModalOpen(true);
-      setUserAnswers([]); // temp solution
-    }
-  }
-
-  function handleModalClose() {
-    setModalOpen(false);
   }
 
   return (
     <section>
-      {modalOpen && (
-        <Modal open={modalOpen} onClose={handleModalClose}>
-          "Lorem ipsum betekent niets, het is een verzameling Latijnse woorden
-          die een tekst vormen van nep vullen, willekeurig, plaatsaanduiding."
-        </Modal>
-      )}
       <div id="quiz">
         <div id="question">
           <progress />
@@ -39,7 +32,7 @@ export default function Quiz() {
         </div>
         <ul id="answers">
           <li className="answer">
-            {QUESTIONS[activeQuestionIndex].answers.map((answer) => {
+            {shuffledAnswers.map((answer) => {
               return (
                 <button
                   key={answer}
