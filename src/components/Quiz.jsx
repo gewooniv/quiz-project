@@ -1,10 +1,9 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { QuizContext } from "./QuizProvider.jsx";
 import Summary from "./Summary.jsx";
 import QUESTIONS from ".././data/questions.js";
 
 export default function Quiz() {
-  const [modalOpen, setModalOpen] = useState(false);
   const [userAnswers, setUserAnswers] = useContext(QuizContext);
 
   const activeQuestionIndex = userAnswers.length;
@@ -21,6 +20,11 @@ export default function Quiz() {
     setUserAnswers((prevState) => {
       return [...prevState, answer];
     });
+    console.log(answer);
+    console.log(QUESTIONS[activeQuestionIndex].answers[0]);
+    if (answer === QUESTIONS[activeQuestionIndex].answers[0]) {
+      console.log("correct");
+    }
   }
 
   return (
@@ -34,10 +38,7 @@ export default function Quiz() {
           <li className="answer">
             {shuffledAnswers.map((answer) => {
               return (
-                <button
-                  key={answer}
-                  onClick={(answer) => handleSelectAnswer(answer)}
-                >
+                <button key={answer} onClick={() => handleSelectAnswer(answer)}>
                   {answer}
                 </button>
               );
