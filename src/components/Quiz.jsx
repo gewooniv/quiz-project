@@ -17,13 +17,28 @@ export default function Quiz() {
   shuffledAnswers.sort(() => Math.random() - 0.5);
 
   function handleSelectAnswer(answer) {
-    setUserAnswers((prevState) => {
-      return [...prevState, answer];
-    });
-    console.log(answer);
-    console.log(QUESTIONS[activeQuestionIndex].answers[0]);
-    if (answer === QUESTIONS[activeQuestionIndex].answers[0]) {
-      console.log("correct");
+    const correctAnswer = QUESTIONS[activeQuestionIndex].answers[0];
+
+    if (answer === correctAnswer) {
+      setUserAnswers((prevState) => {
+        return [
+          ...prevState,
+          {
+            answer,
+            correct: true,
+          },
+        ];
+      });
+    } else {
+      setUserAnswers((prevState) => {
+        return [
+          ...prevState,
+          {
+            answer,
+            correct: false,
+          },
+        ];
+      });
     }
   }
 
