@@ -1,36 +1,44 @@
-import { useQuestions } from "./QuizProvider.jsx";
-import { useState } from "react";
-import Modal from "./Modal.jsx";
+import { useContext } from "react";
+import { QuizContext } from "./QuizProvider.jsx";
+import Summary from "./Summary.jsx";
+import QUESTIONS from ".././data/questions.js";
 
 export default function Quiz() {
-  const questions = useQuestions();
-  const question = questions.find((question) => question.answer === undefined);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [userAnswers, setUserAnswers] = useContext(QuizContext);
 
-  if (!question) {
-    setModalOpen(true);
+  const activeQuestionIndex = userAnswers.length;
+  const answeredAllQuestions = activeQuestionIndex === QUESTIONS.length;
+
+  if (answeredAllQuestions) {
+    return <Summary />;
   }
 
-  function handleModalClose() {
-    setModalOpen(false);
+  const shuffledAnswers = [...QUESTIONS[activeQuestionIndex].answers];
+  shuffledAnswers.sort(() => Math.random() - 0.5);
+
+  function handleSelectAnswer(answer) {
+    setUserAnswers((prevState) => {
+      return [...prevState, answer];
+    });
+    console.log(answer);
+    console.log(QUESTIONS[activeQuestionIndex].answers[0]);
+    if (answer === QUESTIONS[activeQuestionIndex].answers[0]) {
+      console.log("correct");
+    }
   }
 
   return (
     <section>
-      <Modal open={modalOpen} onClose={handleModalClose}>
-        {modalOpen &&
-          "Lorem ipsum betekent niets, het is een verzameling Latijnse woorden die een tekst vormen van nep vullen, willekeurig, plaatsaanduiding."}
-      </Modal>
       <div id="quiz">
         <div id="question">
           <progress />
-          <h2>{question.text}</h2>
+          <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
         </div>
         <ul id="answers">
           <li className="answer">
-            {question.answers.map((answer) => {
+            {shuffledAnswers.map((answer) => {
               return (
-                <button key={Math.random()} onClick={() => setModalOpen(true)}>
+                <button key={answer} onClick={() => handleSelectAnswer(answer)}>
                   {answer}
                 </button>
               );

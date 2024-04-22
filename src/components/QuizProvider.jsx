@@ -1,20 +1,13 @@
-import QUESTIONS from ".././data/questions.js";
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 
-const QuizContext = createContext();
+export const QuizContext = createContext([]);
 
 export default function QuizProvider({ children }) {
-  const [questions, setQuestions] = useState(QUESTIONS);
-
-  questions.map((question) => {
-    return { ...question, answer: undefined };
-  });
+  const [userAnswers, setUserAnswers] = useState([]);
 
   return (
-    <QuizContext.Provider value={questions}>{children}</QuizContext.Provider>
+    <QuizContext.Provider value={[userAnswers, setUserAnswers]}>
+      {children}
+    </QuizContext.Provider>
   );
-}
-
-export function useQuestions() {
-  return useContext(QuizContext);
 }
