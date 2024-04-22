@@ -1,6 +1,7 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { QuizContext } from "./QuizProvider.jsx";
 import Summary from "./Summary.jsx";
+import QuestionProgress from "./QuestionProgress.jsx";
 import QUESTIONS from ".././data/questions.js";
 
 export default function Quiz() {
@@ -16,7 +17,7 @@ export default function Quiz() {
   const shuffledAnswers = [...QUESTIONS[activeQuestionIndex].answers];
   shuffledAnswers.sort(() => Math.random() - 0.5);
 
-  function handleSelectAnswer(answer) {
+  const handleSelectAnswer = useCallback(function handleSelectAnswer(answer) {
     const correctAnswer = QUESTIONS[activeQuestionIndex].answers[0];
 
     if (answer === correctAnswer) {
@@ -40,13 +41,18 @@ export default function Quiz() {
         ];
       });
     }
-  }
+  }, []);
+
+  const handleSkipAnswer = useCallback(
+    () => handleSelectAnswer(null),
+    [handleSelectAnswer],
+  );
 
   return (
     <section>
       <div id="quiz">
         <div id="question">
-          <progress />
+          <QuestionProgress timeout={7500} onTimeout={handleSkipAnswer} />
           <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
         </div>
         <ul id="answers">
